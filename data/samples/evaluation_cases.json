@@ -1,0 +1,486 @@
+[
+  {
+    "id": "REQ-001",
+    "title": "User Login",
+    "description": "Users should be able to log in with email and password.",
+    "user_story": "As a registered user, I want to login so I can access my account.",
+    "acceptance_criteria": [
+      "Valid email and password logs user in",
+      "Invalid credentials show error message",
+      "Empty fields show validation errors",
+      "Password field is masked"
+    ],
+    "domain": "authentication",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": [
+      {
+        "title": "Successful login with valid credentials",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Navigate to login page", "expected": "Login form displayed"},
+          {"step": 2, "action": "Enter valid email", "expected": "Email accepted", "data": "user@test.com"},
+          {"step": 3, "action": "Enter valid password", "expected": "Password masked", "data": "Password123!"},
+          {"step": 4, "action": "Click Login button", "expected": "User redirected to dashboard"}
+        ]
+      },
+      {
+        "title": "Login fails with invalid password",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Enter valid email", "expected": "Email accepted"},
+          {"step": 2, "action": "Enter wrong password", "expected": "Password masked"},
+          {"step": 3, "action": "Click Login", "expected": "Error message: Invalid credentials"}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-002",
+    "title": "User Registration",
+    "description": "New users can create an account with email verification.",
+    "user_story": "As a visitor, I want to register so I can become a member.",
+    "acceptance_criteria": [
+      "Email must be unique",
+      "Password minimum 8 characters",
+      "Verification email sent within 1 minute"
+    ],
+    "domain": "authentication",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-003",
+    "title": "Password Reset",
+    "description": "Users can reset their password using a verified email link.",
+    "user_story": "As a user, I want to reset my password if I forget it so I can regain access.",
+    "acceptance_criteria": [
+      "Reset link sent only to registered email",
+      "Reset link expires after 15 minutes",
+      "New password must follow password policy"
+    ],
+    "domain": "authentication",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-004",
+    "title": "Two-Factor Authentication (2FA)",
+    "description": "Support optional SMS-based two-factor authentication at login.",
+    "user_story": "As a security-conscious user, I want 2FA so attackers cannot access my account with password only.",
+    "acceptance_criteria": [
+      "User can enable/disable 2FA from settings",
+      "When enabled, login requires OTP sent via SMS",
+      "Invalid OTP is rejected"
+    ],
+    "domain": "security",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-005",
+    "title": "Search Products",
+    "description": "Users can search products by keyword, category, and apply filters.",
+    "user_story": "As a shopper, I want to search products so I can find items to buy.",
+    "acceptance_criteria": [
+      "Search returns relevant results within 2 seconds",
+      "Filters narrow down results correctly",
+      "Empty query returns popular items"
+    ],
+    "domain": "ecommerce",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-006",
+    "title": "Add to Cart",
+    "description": "Users can add products to a shopping cart and view cart summary.",
+    "user_story": "As a shopper, I want to add items to my cart so I can check out later.",
+    "acceptance_criteria": [
+      "Item quantity updates correctly",
+      "Cart total calculates price + tax + shipping",
+      "Cart persists for logged-in users across sessions"
+    ],
+    "domain": "ecommerce",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": [
+      {
+        "title": "Add single item to empty cart",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Open product page", "expected": "Product details visible"},
+          {"step": 2, "action": "Click Add to Cart", "expected": "Item added to cart"},
+          {"step": 3, "action": "Open cart", "expected": "Item present with correct price"}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-007",
+    "title": "Checkout and Payment",
+    "description": "Users can checkout and pay via credit card or PayPal.",
+    "user_story": "As a purchaser, I want to pay securely so I can complete orders.",
+    "acceptance_criteria": [
+      "Credit card payments processed successfully",
+      "PayPal redirect flows work",
+      "Payment failures show clear error messages"
+    ],
+    "domain": "payments",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-008",
+    "title": "Order Tracking",
+    "description": "Users can track order status from processing to delivered.",
+    "user_story": "As a customer, I want to track my order so I know when it will arrive.",
+    "acceptance_criteria": [
+      "Order status updates are reflected in UI",
+      "Tracking number links to carrier page",
+      "Notifications sent when status changes"
+    ],
+    "domain": "logistics",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-009",
+    "title": "User Profile Update",
+    "description": "Users can update personal details and upload profile picture.",
+    "user_story": "As a user, I want to update my profile so information stays current.",
+    "acceptance_criteria": [
+      "Profile changes save successfully",
+      "Image upload accepts jpeg/png and limits size to 2MB",
+      "Invalid email format rejected"
+    ],
+    "domain": "user_profile",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-010",
+    "title": "Role-Based Access Control (RBAC)",
+    "description": "Support admin and regular user roles with different permissions.",
+    "user_story": "As an admin, I want to manage users and content so I can keep the platform safe.",
+    "acceptance_criteria": [
+      "Admins can access admin panel",
+      "Regular users cannot access admin routes (403)",
+      "Audit logs record admin actions"
+    ],
+    "domain": "security",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-011",
+    "title": "Bulk CSV Upload for Products",
+    "description": "Admin can upload products via CSV with validation and error reporting.",
+    "user_story": "As an admin, I want to upload many products at once so I save time.",
+    "acceptance_criteria": [
+      "CSV validation reports row-level errors",
+      "Valid rows are imported",
+      "Upload handles 10k rows without server crash"
+    ],
+    "domain": "admin_tools",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-012",
+    "title": "Email Notifications",
+    "description": "System sends transactional emails on registration, order, and password reset.",
+    "user_story": "As a user, I want to receive confirmations so I know actions completed.",
+    "acceptance_criteria": [
+      "Emails are queued and sent within 2 minutes",
+      "Templates render correctly with user data",
+      "Unsubscribe link present where applicable"
+    ],
+    "domain": "notifications",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-013",
+    "title": "Wishlist",
+    "description": "Users can add and remove products from a wishlist.",
+    "user_story": "As a shopper, I want to save products for later so I can buy when ready.",
+    "acceptance_criteria": [
+      "Wishlist persists for logged-in users",
+      "Adding a product already in wishlist shows a message",
+      "Removing a product updates wishlist count"
+    ],
+    "domain": "ecommerce",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-014",
+    "title": "Localization Support",
+    "description": "Application supports English and Spanish content with language switcher.",
+    "user_story": "As a Spanish speaker, I want to view the UI in Spanish so I can use the app comfortably.",
+    "acceptance_criteria": [
+      "All visible strings change when language toggled",
+      "Date/time formats adapt to locale",
+      "Missing translations fallback to English"
+    ],
+    "domain": "internationalization",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-015",
+    "title": "Accessibility - Keyboard Navigation",
+    "description": "All interactive elements must be reachable by keyboard and have ARIA labels.",
+    "user_story": "As a keyboard user, I want to navigate without a mouse so the site is accessible.",
+    "acceptance_criteria": [
+      "Tab order is logical",
+      "Buttons and links have accessible names",
+      "Forms announce validation errors via ARIA"
+    ],
+    "domain": "accessibility",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-016",
+    "title": "Product Reviews",
+    "description": "Customers can submit and view product reviews with ratings.",
+    "user_story": "As a buyer, I want to read reviews so I can make informed purchases.",
+    "acceptance_criteria": [
+      "Ratings average calculated correctly",
+      "Only verified purchasers can review",
+      "Reviews can be paginated"
+    ],
+    "domain": "ecommerce",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-017",
+    "title": "Autosave Drafts for Forms",
+    "description": "Long forms automatically save user input every 30 seconds.",
+    "user_story": "As a user, I want my progress saved automatically so I don't lose data.",
+    "acceptance_criteria": [
+      "Drafts are restorable on page reload",
+      "Autosave doesn't overwrite final submission",
+      "Network loss retries save later"
+    ],
+    "domain": "ux",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-018",
+    "title": "API Rate Limiting",
+    "description": "Public APIs are rate-limited to 100 requests per minute per IP.",
+    "user_story": "As an API consumer, I want predictable rate limits so my client behaves correctly.",
+    "acceptance_criteria": [
+      "Requests exceeding limit return 429",
+      "Rate-limit headers present in response",
+      "Limit resets after correct window"
+    ],
+    "domain": "api",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-019",
+    "title": "Export Order History",
+    "description": "Users can export their order history as CSV within a selected date range.",
+    "user_story": "As a user, I want to download my orders so I can keep personal records.",
+    "acceptance_criteria": [
+      "CSV contains order id, date, total, items",
+      "Date range filters applied correctly",
+      "Export file downloads within 10 seconds for 1 year data"
+    ],
+    "domain": "reports",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-020",
+    "title": "Real-time Chat Support",
+    "description": "Provide real-time chat between user and support agents with presence indicators.",
+    "user_story": "As a user, I want to chat with support so I can resolve issues quickly.",
+    "acceptance_criteria": [
+      "Messages delivered in under 1 second",
+      "Typing indicators visible",
+      "Offline messages stored and delivered when agent returns"
+    ],
+    "domain": "messaging",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-021",
+    "title": "Subscription Billing",
+    "description": "Users can subscribe to monthly plans with automatic billing.",
+    "user_story": "As a subscriber, I want recurring billing so my subscription remains active.",
+    "acceptance_criteria": [
+      "Subscriptions renew automatically unless cancelled",
+      "Invoices generated each billing cycle",
+      "Failed payments notify user and retry per policy"
+    ],
+    "domain": "billing",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-022",
+    "title": "Refund Request",
+    "description": "Customers can request a refund within 30 days of delivery.",
+    "user_story": "As a customer, I want to request refunds for returned items so I can be reimbursed.",
+    "acceptance_criteria": [
+      "Refund requests validate order date and status",
+      "Status changes are logged and emailed",
+      "Partial refunds allowed if part of order returned"
+    ],
+    "domain": "payments",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-023",
+    "title": "Admin Dashboard Analytics",
+    "description": "Admin dashboard shows daily active users and revenue charts.",
+    "user_story": "As an admin, I want analytics so I can monitor platform health.",
+    "acceptance_criteria": [
+      "Charts display data for selected range",
+      "Data refreshes every hour",
+      "Export chart data to CSV"
+    ],
+    "domain": "admin_tools",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-024",
+    "title": "Profile Privacy Settings",
+    "description": "Users can set their profile visibility (public/private/friends-only).",
+    "user_story": "As a user, I want control over who sees my profile to protect privacy.",
+    "acceptance_criteria": [
+      "Changing setting applies immediately",
+      "Private profiles are not visible to anonymous users",
+      "Audit log records setting changes"
+    ],
+    "domain": "privacy",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-025",
+    "title": "Notification Preferences",
+    "description": "Users can opt in/out of email and SMS notifications separately.",
+    "user_story": "As a user, I want to control notification channels so I receive only what I want.",
+    "acceptance_criteria": [
+      "Preference changes reflected immediately",
+      "Opt-out stops further messages to that channel",
+      "Defaults are opt-in for essential messages only"
+    ],
+    "domain": "notifications",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-026",
+    "title": "Image Upload and Resize",
+    "description": "Users can upload images which are validated and resized to multiple sizes.",
+    "user_story": "As a user, I want images to upload quickly and be displayed correctly.",
+    "acceptance_criteria": [
+      "Invalid file types are rejected",
+      "Images are resized to thumbnail, medium, and large",
+      "Upload fails gracefully on network error"
+    ],
+    "domain": "media",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-027",
+    "title": "Comment Moderation",
+    "description": "Comments by users are moderated for profanity and spam before publishing.",
+    "user_story": "As a community manager, I want moderation so the site remains civil.",
+    "acceptance_criteria": [
+      "Profanity flagged automatically",
+      "Moderation queue allows manual approval",
+      "Spam heuristics catch common spam patterns"
+    ],
+    "domain": "content_moderation",
+    "complexity": "high",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-028",
+    "title": "Data Export API",
+    "description": "Provide an authenticated API to export user data in JSON for portability.",
+    "user_story": "As a user, I want to export my data to move it elsewhere.",
+    "acceptance_criteria": [
+      "API requires authentication and authorization",
+      "Export completes within acceptable time",
+      "Export respects user privacy settings"
+    ],
+    "domain": "api",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-029",
+    "title": "Search Autocomplete",
+    "description": "Autocomplete suggestions appear as user types in the search box.",
+    "user_story": "As a user, I want suggestions so I can complete my query faster.",
+    "acceptance_criteria": [
+      "Suggestions appear within 200ms",
+      "Results relevant to popular queries",
+      "Keyboard navigation works within suggestions list"
+    ],
+    "domain": "ux",
+    "complexity": "low",
+    "source": "synthetic",
+    "test_cases": []
+  },
+  {
+    "id": "REQ-030",
+    "title": "Scheduled Reports",
+    "description": "Admins can schedule daily/weekly reports to be emailed automatically.",
+    "user_story": "As an admin, I want automatic reports so I don't export data manually.",
+    "acceptance_criteria": [
+      "Reports run at scheduled times",
+      "Failures retry with backoff",
+      "Attachment email size limits handled"
+    ],
+    "domain": "admin_tools",
+    "complexity": "medium",
+    "source": "synthetic",
+    "test_cases": []
+  }
+]

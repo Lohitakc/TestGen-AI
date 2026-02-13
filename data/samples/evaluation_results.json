@@ -1,0 +1,272 @@
+[
+  {
+    "id": "REQ-001",
+    "domain": "authentication",
+    "accov_before": 0.75,
+    "accov_after_05": 1.0,
+    "accov_after_065": 0.75,
+    "negative_ratio": 0.25,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-002",
+    "domain": "authentication",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 0.33,
+    "negative_ratio": 0.0,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-003",
+    "domain": "authentication",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.25,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-004",
+    "domain": "security",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.5,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-005",
+    "domain": "ecommerce",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.0,
+    "num_test_cases": 2
+  },
+  {
+    "id": "REQ-006",
+    "domain": "ecommerce",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-007",
+    "domain": "payments",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-008",
+    "domain": "logistics",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-009",
+    "domain": "user_profile",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.5,
+    "num_test_cases": 4
+  },
+  {
+    "id": "REQ-010",
+    "domain": "security",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.5,
+    "num_test_cases": 2
+  },
+  {
+    "id": "REQ-011",
+    "domain": "admin_tools",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-012",
+    "domain": "notifications",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-013",
+    "domain": "ecommerce",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-014",
+    "domain": "internationalization",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-015",
+    "domain": "accessibility",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-016",
+    "domain": "ecommerce",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.67,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-017",
+    "domain": "ux",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.6,
+    "num_test_cases": 5
+  },
+  {
+    "id": "REQ-018",
+    "domain": "api",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.0,
+    "num_test_cases": 2
+  },
+  {
+    "id": "REQ-019",
+    "domain": "reports",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.0,
+    "num_test_cases": 2
+  },
+  {
+    "id": "REQ-020",
+    "domain": "messaging",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.2,
+    "num_test_cases": 5
+  },
+  {
+    "id": "REQ-021",
+    "domain": "billing",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-022",
+    "domain": "payments",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-023",
+    "domain": "admin_tools",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-024",
+    "domain": "privacy",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-025",
+    "domain": "notifications",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-026",
+    "domain": "media",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-027",
+    "domain": "content_moderation",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-028",
+    "domain": "api",
+    "accov_before": 0.0,
+    "accov_after_05": 0.67,
+    "accov_after_065": 0.67,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-029",
+    "domain": "ux",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.0,
+    "num_test_cases": 3
+  },
+  {
+    "id": "REQ-030",
+    "domain": "admin_tools",
+    "accov_before": 0.0,
+    "accov_after_05": 1.0,
+    "accov_after_065": 1.0,
+    "negative_ratio": 0.33,
+    "num_test_cases": 3
+  }
+]

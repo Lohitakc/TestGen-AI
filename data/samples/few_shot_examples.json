@@ -1,0 +1,210 @@
+[
+  {
+    "requirement": {
+      "description": "Users should be able to login with username and password",
+      "acceptance_criteria": [
+        "Valid credentials allow login",
+        "Invalid credentials show an error",
+        "Password input is masked"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Login with valid credentials",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Enter valid username", "expected": "Username accepted"},
+          {"step": 2, "action": "Enter valid password", "expected": "Password is masked"},
+          {"step": 3, "action": "Click Login", "expected": "User redirected to dashboard"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should be able to logout securely",
+      "acceptance_criteria": [
+        "User session is terminated",
+        "User is redirected to login page"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Successful logout",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Click Logout", "expected": "Session terminated"},
+          {"step": 2, "action": "System redirects user", "expected": "Login page displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should submit a contact form with required fields",
+      "acceptance_criteria": [
+        "All required fields must be filled",
+        "Successful submission shows confirmation"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Submit contact form with valid inputs",
+        "type": "Functional",
+        "priority": "Medium",
+        "steps": [
+          {"step": 1, "action": "Fill all required fields", "expected": "Fields accepted"},
+          {"step": 2, "action": "Submit form", "expected": "Confirmation message displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should receive validation errors for empty mandatory fields",
+      "acceptance_criteria": [
+        "Empty mandatory fields trigger validation messages"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Validation for empty fields",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Leave mandatory fields empty"},
+          {"step": 2, "action": "Submit form", "expected": "Validation errors displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should search products using keywords",
+      "acceptance_criteria": [
+        "Relevant products are shown",
+        "Search results update dynamically"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Search with valid keyword",
+        "type": "Functional",
+        "priority": "Medium",
+        "steps": [
+          {"step": 1, "action": "Enter product keyword"},
+          {"step": 2, "action": "Submit search", "expected": "Relevant products displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "System should handle searches with no matching results",
+      "acceptance_criteria": [
+        "User is informed when no results are found"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Search returns no results",
+        "type": "Negative",
+        "priority": "Low",
+        "steps": [
+          {"step": 1, "action": "Enter uncommon keyword"},
+          {"step": 2, "action": "Submit search", "expected": "No results message displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should be able to complete payment using a debit card",
+      "acceptance_criteria": [
+        "Valid payment details process successfully",
+        "Payment confirmation is shown"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Successful debit card payment",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Enter valid card details"},
+          {"step": 2, "action": "Confirm payment", "expected": "Payment successful message shown"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "System should handle payment failures gracefully",
+      "acceptance_criteria": [
+        "Failed payments show error message"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Payment failure handling",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Enter invalid card details"},
+          {"step": 2, "action": "Submit payment", "expected": "Payment failure message displayed"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Users should upload profile images in supported formats",
+      "acceptance_criteria": [
+        "Only supported file formats are accepted",
+        "Successful upload confirmation is shown"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Upload valid profile image",
+        "type": "Functional",
+        "priority": "Medium",
+        "steps": [
+          {"step": 1, "action": "Select supported image file"},
+          {"step": 2, "action": "Upload file", "expected": "Upload successful message shown"}
+        ]
+      }
+    ]
+  },
+
+  {
+    "requirement": {
+      "description": "Only administrators should be able to delete user accounts",
+      "acceptance_criteria": [
+        "Admins can delete user accounts",
+        "Non-admin users are denied access"
+      ]
+    },
+    "test_cases": [
+      {
+        "title": "Admin deletes user account",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {"step": 1, "action": "Login as admin"},
+          {"step": 2, "action": "Delete user account", "expected": "User account deleted successfully"}
+        ]
+      }
+    ]
+  }
+]

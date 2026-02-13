@@ -1,0 +1,1565 @@
+[
+  {
+    "id": "REQ-001",
+    "description": "Users should be able to log in with email and password.",
+    "acceptance_criteria": [
+      "Valid email and password logs user in",
+      "Invalid credentials show error message",
+      "Empty fields show validation errors",
+      "Password field is masked"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Successful login with valid credentials",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter valid email and password",
+            "expected": "Logged in successfully"
+          }
+        ]
+      },
+      {
+        "title": "Invalid credentials show error message",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid email and password",
+            "expected": "Error message displayed"
+          }
+        ]
+      },
+      {
+        "title": "Empty fields show validation errors",
+        "type": "Functional",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Leave email field empty and enter invalid password",
+            "expected": "Validation error message displayed for email"
+          }
+        ]
+      },
+      {
+        "title": "Sensitive input masking",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter sensitive input",
+            "expected": "Input characters are masked"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-002",
+    "description": "New users can create an account with email verification.",
+    "acceptance_criteria": [
+      "Email must be unique",
+      "Password minimum 8 characters",
+      "Verification email sent within 1 minute"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Unique email registration",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Register with duplicate email",
+            "expected": "Error message displayed"
+          }
+        ]
+      },
+      {
+        "title": "Minimum password length registration",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Register with short password",
+            "expected": "Error message displayed"
+          }
+        ]
+      },
+      {
+        "title": "Verification email sent within 1 minute",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Register and wait for 1 minute",
+            "expected": "Verification email received"
+          }
+        ]
+      },
+      {
+        "title": "Sensitive input masking",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter sensitive input",
+            "expected": "Input characters are masked"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-003",
+    "description": "Users can reset their password using a verified email link.",
+    "acceptance_criteria": [
+      "Reset link sent only to registered email",
+      "Reset link expires after 15 minutes",
+      "New password must follow password policy"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Reset link sent only to registered email",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Create account with valid email",
+            "expected": "Registration successful"
+          }
+        ]
+      },
+      {
+        "title": "Reset link expires after 15 minutes",
+        "type": "Boundary",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Generate reset link and wait for 14 minutes",
+            "expected": "Link is still valid"
+          },
+          {
+            "step": 2,
+            "action": "Wait for 16 minutes and try to use reset link",
+            "expected": "Link has expired"
+          }
+        ]
+      },
+      {
+        "title": "New password must follow password policy",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Create new account with weak password",
+            "expected": "Password reset failed due to policy violation"
+          }
+        ]
+      },
+      {
+        "title": "Sensitive input masking",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter sensitive input",
+            "expected": "Input characters are masked"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-004",
+    "description": "Support optional SMS-based two-factor authentication at login.",
+    "acceptance_criteria": [
+      "User can enable/disable 2FA from settings",
+      "When enabled, login requires OTP sent via SMS",
+      "Invalid OTP is rejected"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "User enables 2FA from settings",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Navigate to settings",
+            "expected": "2FA option is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Login requires OTP when 2FA is enabled",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enable 2FA",
+            "expected": "2FA is enabled"
+          },
+          {
+            "step": 2,
+            "action": "Login with valid credentials",
+            "expected": "OTP prompt is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Invalid OTP is rejected",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enable 2FA",
+            "expected": "2FA is enabled"
+          },
+          {
+            "step": 2,
+            "action": "Login with valid credentials and invalid OTP",
+            "expected": "OTP is rejected"
+          }
+        ]
+      },
+      {
+        "title": "Empty mandatory field validation",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Leave mandatory fields empty",
+            "expected": "Fields remain empty"
+          },
+          {
+            "step": 2,
+            "action": "Submit form",
+            "expected": "Validation error messages displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-005",
+    "description": "Users can search products by keyword, category, and apply filters.",
+    "acceptance_criteria": [
+      "Search returns relevant results within 2 seconds",
+      "Filters narrow down results correctly",
+      "Empty query returns popular items"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Search returns relevant results within 2 seconds",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter search query and apply filters",
+            "expected": "Relevant results are displayed"
+          }
+        ]
+      },
+      {
+        "title": "Filters narrow down results correctly",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Apply multiple filters",
+            "expected": "Results are narrowed down accordingly"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-006",
+    "description": "Users can add products to a shopping cart and view cart summary.",
+    "acceptance_criteria": [
+      "Item quantity updates correctly",
+      "Cart total calculates price + tax + shipping",
+      "Cart persists for logged-in users across sessions"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Item quantity updates correctly",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Add item to cart",
+            "expected": "Item quantity is updated"
+          }
+        ]
+      },
+      {
+        "title": "Cart total calculates price + tax + shipping",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "View cart summary",
+            "expected": "Total price is calculated correctly"
+          }
+        ]
+      },
+      {
+        "title": "Cart persists for logged-in users across sessions",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Logout and login again",
+            "expected": "Cart contents are preserved"
+          }
+        ]
+      },
+      {
+        "title": "Sensitive input masking",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter sensitive input",
+            "expected": "Input characters are masked"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-007",
+    "description": "Users can checkout and pay via credit card or PayPal.",
+    "acceptance_criteria": [
+      "Credit card payments processed successfully",
+      "PayPal redirect flows work",
+      "Payment failures show clear error messages"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Credit card payment processed successfully",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter credit card details",
+            "expected": "Payment is processed"
+          }
+        ]
+      },
+      {
+        "title": "PayPal redirect flow works",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Select PayPal as payment method",
+            "expected": "Redirected to PayPal login page"
+          },
+          {
+            "step": 2,
+            "action": "Observe successful redirect",
+            "expected": "Payment is processed"
+          }
+        ]
+      },
+      {
+        "title": "Clear error message for credit card payment failure",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid credit card details",
+            "expected": "Error message is displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-008",
+    "description": "Users can track order status from processing to delivered.",
+    "acceptance_criteria": [
+      "Order status updates are reflected in UI",
+      "Tracking number links to carrier page",
+      "Notifications sent when status changes"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Order status updates reflected in UI",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Place order",
+            "expected": "Order status is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Tracking number links to carrier page",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Click tracking number",
+            "expected": "Carrier page is opened"
+          }
+        ]
+      },
+      {
+        "title": "Notifications sent when status changes",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Change order status",
+            "expected": "Notification is sent"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-009",
+    "description": "Users can update personal details and upload profile picture.",
+    "acceptance_criteria": [
+      "Profile changes save successfully",
+      "Image upload accepts jpeg/png and limits size to 2MB",
+      "Invalid email format rejected"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Successful profile update",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Fill in new details",
+            "expected": "Profile updated successfully"
+          }
+        ]
+      },
+      {
+        "title": "Invalid email format rejected",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid email",
+            "expected": "Error message displayed"
+          }
+        ]
+      },
+      {
+        "title": "Image upload with valid extension and size",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload image with .jpg/.png",
+            "expected": "Image uploaded successfully"
+          }
+        ]
+      },
+      {
+        "title": "Image upload exceeds size limit",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload large image",
+            "expected": "Error message displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-010",
+    "description": "Support admin and regular user roles with different permissions.",
+    "acceptance_criteria": [
+      "Admins can access admin panel",
+      "Regular users cannot access admin routes (403)",
+      "Audit logs record admin actions"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Admin accesses admin panel",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Login as admin",
+            "expected": "Redirected to admin panel"
+          }
+        ]
+      },
+      {
+        "title": "Regular user cannot access admin routes",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Login as regular user",
+            "expected": "403 error is displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-011",
+    "description": "Admin can upload products via CSV with validation and error reporting.",
+    "acceptance_criteria": [
+      "CSV validation reports row-level errors",
+      "Valid rows are imported",
+      "Upload handles 10k rows without server crash"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "CSV upload with valid data",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload CSV file",
+            "expected": "Valid rows are imported"
+          }
+        ]
+      },
+      {
+        "title": "CSV upload with invalid data",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload CSV file with errors",
+            "expected": "CSV validation reports row-level errors"
+          }
+        ]
+      },
+      {
+        "title": "Large CSV upload without server crash",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload CSV file with 10k rows",
+            "expected": "Upload handles 10k rows without server crash"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-012",
+    "description": "System sends transactional emails on registration, order, and password reset.",
+    "acceptance_criteria": [
+      "Emails are queued and sent within 2 minutes",
+      "Templates render correctly with user data",
+      "Unsubscribe link present where applicable"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Transactional emails sent within 2 minutes",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Register a new user",
+            "expected": "Emails are queued and sent within 2 minutes"
+          }
+        ]
+      },
+      {
+        "title": "Transactional emails render correctly with user data",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Reset password",
+            "expected": "Templates render correctly with user data"
+          }
+        ]
+      },
+      {
+        "title": "Unsubscribe link present in transactional emails",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Check order confirmation email",
+            "expected": "Unsubscribe link is present"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-013",
+    "description": "Users can add and remove products from a wishlist.",
+    "acceptance_criteria": [
+      "Wishlist persists for logged-in users",
+      "Adding a product already in wishlist shows a message",
+      "Removing a product updates wishlist count"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Wishlist persists after login",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Login and navigate to wishlist",
+            "expected": "Wishlist is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Adding duplicate product shows message",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Add product to wishlist",
+            "expected": "Message indicating product already in wishlist is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Removing product updates count",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Remove product from wishlist",
+            "expected": "Wishlist count is updated"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-014",
+    "description": "Application supports English and Spanish content with language switcher.",
+    "acceptance_criteria": [
+      "All visible strings change when language toggled",
+      "Date/time formats adapt to locale",
+      "Missing translations fallback to English"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Language switcher changes visible strings",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Toggle language to Spanish",
+            "expected": "All visible strings are in Spanish"
+          }
+        ]
+      },
+      {
+        "title": "Date/time formats adapt to locale",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Toggle language to Spanish",
+            "expected": "Date and time formats are in Spanish format"
+          }
+        ]
+      },
+      {
+        "title": "Missing translations fallback to English",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Toggle language to Spanish",
+            "expected": "Untranslated strings remain in English"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-015",
+    "description": "All interactive elements must be reachable by keyboard and have ARIA labels.",
+    "acceptance_criteria": [
+      "Tab order is logical",
+      "Buttons and links have accessible names",
+      "Forms announce validation errors via ARIA"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Tab order is logical",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Navigate to page",
+            "expected": "Tab order follows a logical sequence"
+          }
+        ]
+      },
+      {
+        "title": "Button and link accessibility",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Focus on button/link",
+            "expected": "Accessible name is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Form validation error announcement",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Submit invalid form",
+            "expected": "Validation errors are announced via ARIA"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-016",
+    "description": "Customers can submit and view product reviews with ratings.",
+    "acceptance_criteria": [
+      "Ratings average calculated correctly",
+      "Only verified purchasers can review",
+      "Reviews can be paginated"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Ratings average calculated correctly",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Select multiple reviews",
+            "expected": "Average rating displayed"
+          }
+        ]
+      },
+      {
+        "title": "Only verified purchasers can review",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Try to submit a review without verification",
+            "expected": "Review submission denied"
+          }
+        ]
+      },
+      {
+        "title": "Empty mandatory field validation",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Leave mandatory fields empty",
+            "expected": "Fields remain empty"
+          },
+          {
+            "step": 2,
+            "action": "Submit form",
+            "expected": "Validation error messages displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-017",
+    "description": "Long forms automatically save user input every 30 seconds.",
+    "acceptance_criteria": [
+      "Drafts are restorable on page reload",
+      "Autosave doesn't overwrite final submission",
+      "Network loss retries save later"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Autosave saves draft on page reload",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Fill out form partially",
+            "expected": "Draft is saved"
+          }
+        ]
+      },
+      {
+        "title": "Autosave doesn't overwrite final submission",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Submit form fully",
+            "expected": "Submission is successful"
+          },
+          {
+            "step": 2,
+            "action": "Wait for 30 seconds",
+            "expected": "No overwrite occurs"
+          }
+        ]
+      },
+      {
+        "title": "Network loss retries save later",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Simulate network loss",
+            "expected": "Autosave is retried"
+          },
+          {
+            "step": 2,
+            "action": "Restore network connection",
+            "expected": "Save is successful"
+          }
+        ]
+      },
+      {
+        "title": "Empty mandatory field validation",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Leave mandatory fields empty",
+            "expected": "Fields remain empty"
+          },
+          {
+            "step": 2,
+            "action": "Submit form",
+            "expected": "Validation error messages displayed"
+          }
+        ]
+      },
+      {
+        "title": "Invalid input handling",
+        "type": "Negative",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid data",
+            "expected": "Data is entered"
+          },
+          {
+            "step": 2,
+            "action": "Submit",
+            "expected": "Appropriate error message displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-018",
+    "description": "Public APIs are rate-limited to 100 requests per minute per IP.",
+    "acceptance_criteria": [
+      "Requests exceeding limit return 429",
+      "Rate-limit headers present in response",
+      "Limit resets after correct window"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Rate limit exceeded returns 429",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Make 101 requests within 1 minute",
+            "expected": "Response with status code 429"
+          }
+        ]
+      },
+      {
+        "title": "Rate-limit headers present in response",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Make 100 requests within 1 minute",
+            "expected": "Response with rate-limit headers"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-019",
+    "description": "Users can export their order history as CSV within a selected date range.",
+    "acceptance_criteria": [
+      "CSV contains order id, date, total, items",
+      "Date range filters applied correctly",
+      "Export file downloads within 10 seconds for 1 year data"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "CSV export contains correct data",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Select date range and download CSV",
+            "expected": "CSV contains order id, date, total, items"
+          }
+        ]
+      },
+      {
+        "title": "Date range filters applied correctly",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Select specific date range and download CSV",
+            "expected": "CSV only contains orders within selected date range"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-020",
+    "description": "Provide real-time chat between user and support agents with presence indicators.",
+    "acceptance_criteria": [
+      "Messages delivered in under 1 second",
+      "Typing indicators visible",
+      "Offline messages stored and delivered when agent returns"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Real-time chat with support agents",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Start real-time chat",
+            "expected": "Chat window is displayed"
+          }
+        ]
+      },
+      {
+        "title": "Typing indicators visible",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Agent starts typing",
+            "expected": "Typing indicator appears"
+          },
+          {
+            "step": 2,
+            "action": "Stop agent's typing",
+            "expected": "Typing indicator disappears"
+          }
+        ]
+      },
+      {
+        "title": "Offline messages stored and delivered",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Agent goes offline",
+            "expected": "Message is stored"
+          },
+          {
+            "step": 2,
+            "action": "Agent returns online",
+            "expected": "Stored message is delivered"
+          }
+        ]
+      },
+      {
+        "title": "Sensitive input masking",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter sensitive input",
+            "expected": "Input characters are masked"
+          }
+        ]
+      },
+      {
+        "title": "Invalid input handling",
+        "type": "Negative",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid data",
+            "expected": "Data is entered"
+          },
+          {
+            "step": 2,
+            "action": "Submit",
+            "expected": "Appropriate error message displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-021",
+    "description": "Users can subscribe to monthly plans with automatic billing.",
+    "acceptance_criteria": [
+      "Subscriptions renew automatically unless cancelled",
+      "Invoices generated each billing cycle",
+      "Failed payments notify user and retry per policy"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Automatic subscription renewal",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Create subscription",
+            "expected": "Subscription is active"
+          }
+        ]
+      },
+      {
+        "title": "Failed payment notification and retry",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Simulate failed payment",
+            "expected": "User notified of failure"
+          },
+          {
+            "step": 2,
+            "action": "Observe retry attempt",
+            "expected": "Retry successful"
+          }
+        ]
+      },
+      {
+        "title": "Invoice generation for automatic billing",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Create subscription with automatic billing",
+            "expected": "Invoice generated"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-022",
+    "description": "Customers can request a refund within 30 days of delivery.",
+    "acceptance_criteria": [
+      "Refund requests validate order date and status",
+      "Status changes are logged and emailed",
+      "Partial refunds allowed if part of order returned"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Refund request within 30 days",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Request refund for returned item",
+            "expected": "Refund request is processed"
+          }
+        ]
+      },
+      {
+        "title": "Invalid refund request due to order status",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Request refund for unreturned item",
+            "expected": "Refund request is rejected"
+          }
+        ]
+      },
+      {
+        "title": "Partial refund for part of returned order",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Request partial refund for part of returned order",
+            "expected": "Partial refund is processed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-023",
+    "description": "Admin dashboard shows daily active users and revenue charts.",
+    "acceptance_criteria": [
+      "Charts display data for selected range",
+      "Data refreshes every hour",
+      "Export chart data to CSV"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Charts display data for selected range",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Select date range",
+            "expected": "Charts display data"
+          }
+        ]
+      },
+      {
+        "title": "Data refreshes every hour",
+        "type": "Boundary",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Wait for 59 minutes",
+            "expected": "Data does not refresh"
+          },
+          {
+            "step": 2,
+            "action": "Wait for 1 minute",
+            "expected": "Data refreshes"
+          }
+        ]
+      },
+      {
+        "title": "Export chart data to CSV",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Click export button",
+            "expected": "CSV file is downloaded"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-024",
+    "description": "Users can set their profile visibility (public/private/friends-only).",
+    "acceptance_criteria": [
+      "Changing setting applies immediately",
+      "Private profiles are not visible to anonymous users",
+      "Audit log records setting changes"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Private profile setting applies immediately",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Set profile visibility to private",
+            "expected": "Profile is not visible to anonymous users"
+          }
+        ]
+      },
+      {
+        "title": "Private profiles are visible to friends only",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Set profile visibility to private and add friends",
+            "expected": "Profile is visible to friends"
+          }
+        ]
+      },
+      {
+        "title": "Audit log records setting changes",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Change profile visibility setting",
+            "expected": "Setting change recorded in audit log"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-025",
+    "description": "Users can opt in/out of email and SMS notifications separately.",
+    "acceptance_criteria": [
+      "Preference changes reflected immediately",
+      "Opt-out stops further messages to that channel",
+      "Defaults are opt-in for essential messages only"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Notification preference changes reflected immediately",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Update notification preferences",
+            "expected": "Preference changes reflected"
+          }
+        ]
+      },
+      {
+        "title": "Opt-out stops further messages to that channel",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Opt out of SMS notifications",
+            "expected": "No further SMS messages received"
+          }
+        ]
+      },
+      {
+        "title": "Default notification settings for essential messages only",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Verify default notification settings",
+            "expected": "Essential messages set to opt-in"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-026",
+    "description": "Users can upload images which are validated and resized to multiple sizes.",
+    "acceptance_criteria": [
+      "Invalid file types are rejected",
+      "Images are resized to thumbnail, medium, and large",
+      "Upload fails gracefully on network error"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Invalid file types are rejected",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload invalid file type",
+            "expected": "Error message displayed"
+          }
+        ]
+      },
+      {
+        "title": "Images are resized correctly",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload image",
+            "expected": "Image is resized to thumbnail, medium, and large sizes"
+          }
+        ]
+      },
+      {
+        "title": "Upload fails gracefully on network error",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Simulate network error",
+            "expected": "Error message displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-027",
+    "description": "Comments by users are moderated for profanity and spam before publishing.",
+    "acceptance_criteria": [
+      "Profanity flagged automatically",
+      "Moderation queue allows manual approval",
+      "Spam heuristics catch common spam patterns"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Profanity flagged automatically",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Post profane comment",
+            "expected": "Comment is flagged for moderation"
+          }
+        ]
+      },
+      {
+        "title": "Spam heuristics catch common spam patterns",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Post spam comment",
+            "expected": "Comment is flagged for moderation"
+          }
+        ]
+      },
+      {
+        "title": "Manual approval required for non-spam comments",
+        "type": "Negative",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Post non-spam comment",
+            "expected": "Comment is sent to moderation queue"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-028",
+    "description": "Provide an authenticated API to export user data in JSON for portability.",
+    "acceptance_criteria": [
+      "API requires authentication and authorization",
+      "Export completes within acceptable time",
+      "Export respects user privacy settings"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "API requires authentication and authorization",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Make unauthenticated API request",
+            "expected": "Unauthorized error response"
+          }
+        ]
+      },
+      {
+        "title": "Export completes within acceptable time",
+        "type": "Functional",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Make authenticated API request",
+            "expected": "JSON export response within expected timeframe"
+          }
+        ]
+      },
+      {
+        "title": "Invalid input handling",
+        "type": "Negative",
+        "priority": "Medium",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Enter invalid data",
+            "expected": "Data is entered"
+          },
+          {
+            "step": 2,
+            "action": "Submit",
+            "expected": "Appropriate error message displayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-029",
+    "description": "Autocomplete suggestions appear as user types in the search box.",
+    "acceptance_criteria": [
+      "Suggestions appear within 200ms",
+      "Results relevant to popular queries",
+      "Keyboard navigation works within suggestions list"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Suggestions appear within 200ms",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Type a character in search box",
+            "expected": "Suggestions appear within 200ms"
+          }
+        ]
+      },
+      {
+        "title": "Relevant suggestions for popular queries",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Search for a popular query",
+            "expected": "Relevant suggestions are displayed"
+          }
+        ]
+      },
+      {
+        "title": "Keyboard navigation works within suggestions list",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Navigate to suggestion using keyboard",
+            "expected": "Selected suggestion is highlighted"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "REQ-030",
+    "description": "Admins can schedule daily/weekly reports to be emailed automatically.",
+    "acceptance_criteria": [
+      "Reports run at scheduled times",
+      "Failures retry with backoff",
+      "Attachment email size limits handled"
+    ],
+    "generated_test_cases": [
+      {
+        "title": "Reports run at scheduled times",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Schedule report",
+            "expected": "Report runs at scheduled time"
+          }
+        ]
+      },
+      {
+        "title": "Failure retry with backoff",
+        "type": "Negative",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Simulate report failure",
+            "expected": "Retry after backoff delay"
+          }
+        ]
+      },
+      {
+        "title": "Attachment email size limits handled",
+        "type": "Functional",
+        "priority": "High",
+        "steps": [
+          {
+            "step": 1,
+            "action": "Upload large attachment",
+            "expected": "Email sent with attachment truncated"
+          }
+        ]
+      }
+    ]
+  }
+]
