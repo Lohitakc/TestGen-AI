@@ -1,6 +1,9 @@
 import json
 import re
-from ollama import chat
+from functools import lru_cache
+
+from langchain_ollama import ChatOllama
+
 from backend.prompts import BASE_TEST_GEN_PROMPT
 from backend.rag_pipeline import retrieve_similar_requirements
 
@@ -10,117 +13,92 @@ def load_few_shot_examples():
         return json.load(f)
 
 
+def _format_few_shot_examples(few_shot_examples, max_examples=2):
+    if not few_shot_examples:
+        return ""
+
+    blocks = []
+    for idx, example in enumerate(few_shot_examples[:max_examples], start=1):
+        requirement = example.get("requirement", {})
+        test_cases = example.get("test_cases", [])[:2]
+
+        blocks.append(
+            "Few-shot Example {idx}\n"
+            "Requirement: {description}\n"
+            "Acceptance Criteria: {acceptance_criteria}\n"
+            "Example Test Cases: {test_cases}\n".format(
+                idx=idx,
+                description=requirement.get("description", ""),
+                acceptance_criteria=json.dumps(
+                    requirement.get("acceptance_criteria", []), ensure_ascii=False
+                ),
+                test_cases=json.dumps(test_cases, ensure_ascii=False),
+            )
+        )
+
+    return "\n".join(blocks)
+
+
 def build_generation_prompt(requirement, few_shot_examples):
+    few_shot_block = _format_few_shot_examples(few_shot_examples, max_examples=2)
 
-    # Use a MINIMAL, perfectly-formed example to guide the model
-    hardcoded_example = """
-Example Input:
-Requirement: Users should be able to logout securely.
-Acceptance Criteria: ["User session is terminated", "User is redirected to login page"]
-
-Example Output:
-[
-  {
-    "title": "Successful logout terminates session",
-    "type": "Functional",
-    "priority": "High",
-    "steps": [
-      {"step": 1, "action": "Click Logout button", "expected": "Session is terminated"},
-      {"step": 2, "action": "Observe redirect", "expected": "Login page is displayed"}
-    ]
-  },
-  {
-    "title": "Access protected page after logout",
-    "type": "Negative",
-    "priority": "High",
-    "steps": [
-      {"step": 1, "action": "Logout successfully", "expected": "Redirected to login"},
-      {"step": 2, "action": "Navigate to dashboard URL directly", "expected": "Access denied or redirected to login"}
-    ]
-  }
-]
-"""
-
-    # RAG retrieval (keep it light)
-    similar_requirements = retrieve_similar_requirements(
-        requirement["description"], k=2
-    )
-
+    similar_requirements = retrieve_similar_requirements(requirement["description"], k=3)
     similar_block = ""
     if similar_requirements:
-        similar_block = "\nSimilar Requirements (for context only, do NOT copy):\n"
-        for s in similar_requirements:
-            similar_block += f"- {s.get('description', '')}\n"
+        similar_block = "Similar requirements for context (do not copy wording):\n"
+        for similar in similar_requirements:
+            similar_block += f"- {similar.get('description', '')}\n"
 
-    final_prompt = (
-        hardcoded_example
-        + similar_block
-        + "\nNow generate test cases for the following:\n\n"
+    return (
+        "Use the examples and context below as style guidance only.\n\n"
+        f"{few_shot_block}\n\n"
+        f"{similar_block}\n\n"
+        "Now generate the suite for the target requirement.\n\n"
         + BASE_TEST_GEN_PROMPT.format(
             description=requirement["description"],
             user_story=requirement.get("user_story", ""),
-            acceptance_criteria=json.dumps(requirement["acceptance_criteria"])
+            acceptance_criteria=json.dumps(
+                requirement["acceptance_criteria"], ensure_ascii=False
+            ),
         )
     )
 
-    return final_prompt
-
 
 def repair_json_string(raw: str) -> str:
-    """
-    Aggressively repair common LLM JSON mistakes.
-    """
-    # Remove markdown code fences
-    raw = re.sub(r'```json\s*', '', raw)
-    raw = re.sub(r'```\s*', '', raw)
+    raw = re.sub(r"```json\s*", "", raw)
+    raw = re.sub(r"```\s*", "", raw)
 
-    # Extract outermost [ ... ]
-    start = raw.find('[')
-    end = raw.rfind(']')
+    start = raw.find("[")
+    end = raw.rfind("]")
     if start == -1 or end == -1:
         raise ValueError("No JSON array found in response")
-    raw = raw[start:end + 1]
+    raw = raw[start : end + 1]
 
-    # Remove control characters except newline/tab
-    raw = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', raw)
+    raw = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", raw)
 
-    # Fix single quotes to double quotes (crude but effective for LLM output)
-    # Only do this if there are no double quotes around keys
     if raw.count("'") > raw.count('"'):
         raw = raw.replace("'", '"')
 
-    # Remove trailing commas before ] or }
-    raw = re.sub(r',\s*(\])', r'\1', raw)
-    raw = re.sub(r',\s*(\})', r'\1', raw)
+    raw = re.sub(r",\s*(\])", r"\1", raw)
+    raw = re.sub(r",\s*(\})", r"\1", raw)
+    raw = re.sub(r"\}\s*\{", "},{", raw)
+    raw = re.sub(r"\]\s*\{", "],{", raw)
 
-    # Fix missing commas between } and { (common LLM mistake)
-    raw = re.sub(r'\}\s*\{', '},{', raw)
+    end = raw.rfind("]")
+    raw = raw[: end + 1]
 
-    # Fix missing commas between ] and { inside array
-    raw = re.sub(r'\]\s*\{', '],{', raw)
+    open_sq = raw.count("[")
+    close_sq = raw.count("]")
+    open_cr = raw.count("{")
+    close_cr = raw.count("}")
 
-    # Remove any text after the final ]
-    end = raw.rfind(']')
-    raw = raw[:end + 1]
-
-    # Try to balance brackets
-    open_sq = raw.count('[')
-    close_sq = raw.count(']')
-    open_cr = raw.count('{')
-    close_cr = raw.count('}')
-
-    # Add missing closing brackets
-    raw += '}' * max(0, open_cr - close_cr)
-    raw += ']' * max(0, open_sq - close_sq)
+    raw += "}" * max(0, open_cr - close_cr)
+    raw += "]" * max(0, open_sq - close_sq)
 
     return raw
 
 
 def parse_json_robust(raw: str) -> list:
-    """
-    Try multiple strategies to parse LLM JSON output.
-    """
-    # Strategy 1: Direct parse
     try:
         result = json.loads(raw)
         if isinstance(result, list):
@@ -128,7 +106,6 @@ def parse_json_robust(raw: str) -> list:
     except json.JSONDecodeError:
         pass
 
-    # Strategy 2: Repair then parse
     try:
         repaired = repair_json_string(raw)
         result = json.loads(repaired)
@@ -137,29 +114,26 @@ def parse_json_robust(raw: str) -> list:
     except json.JSONDecodeError:
         pass
 
-    # Strategy 3: Find individual JSON objects and assemble
     try:
         repaired = repair_json_string(raw)
-        # Find all { ... } blocks
         objects = []
         depth = 0
         start_idx = None
         for i, ch in enumerate(repaired):
-            if ch == '{':
+            if ch == "{":
                 if depth == 0:
                     start_idx = i
                 depth += 1
-            elif ch == '}':
+            elif ch == "}":
                 depth -= 1
                 if depth == 0 and start_idx is not None:
-                    obj_str = repaired[start_idx:i + 1]
+                    obj_str = repaired[start_idx : i + 1]
                     try:
                         obj = json.loads(obj_str)
                         objects.append(obj)
                     except json.JSONDecodeError:
-                        # Try fixing this individual object
-                        obj_str = re.sub(r',\s*\}', '}', obj_str)
-                        obj_str = re.sub(r',\s*\]', ']', obj_str)
+                        obj_str = re.sub(r",\s*\}", "}", obj_str)
+                        obj_str = re.sub(r",\s*\]", "]", obj_str)
                         try:
                             obj = json.loads(obj_str)
                             objects.append(obj)
@@ -172,82 +146,115 @@ def parse_json_robust(raw: str) -> list:
     except Exception:
         pass
 
-    raise ValueError(f"Could not parse JSON after all strategies. Raw (first 500 chars): {raw[:500]}")
+    raise ValueError(
+        f"Could not parse JSON after all strategies. Raw (first 500 chars): {raw[:500]}"
+    )
 
 
 def validate_test_case(tc: dict) -> dict:
-    """
-    Normalize a test case to expected schema.
-    """
     normalized = {
         "title": tc.get("title", "Untitled"),
         "type": tc.get("type", "Functional"),
         "priority": tc.get("priority", "Medium"),
-        "steps": []
+        "steps": [],
     }
 
-    # Normalize type
-    valid_types = {"Functional", "Negative", "Boundary", "Integration", "Performance", "Regression"}
+    valid_types = {
+        "Functional",
+        "Negative",
+        "Boundary",
+        "Integration",
+        "Performance",
+        "Regression",
+        "Security",
+        "Usability",
+    }
     if normalized["type"] not in valid_types:
         normalized["type"] = "Functional"
 
-    # Normalize priority
     valid_priorities = {"High", "Medium", "Low"}
     if normalized["priority"] not in valid_priorities:
         normalized["priority"] = "Medium"
 
-    # Normalize steps
     raw_steps = tc.get("steps", [])
     if isinstance(raw_steps, list):
-        for i, s in enumerate(raw_steps):
-            if isinstance(s, dict):
-                normalized["steps"].append({
-                    "step": s.get("step", i + 1),
-                    "action": s.get("action", s.get("description", "No action")),
-                    "expected": s.get("expected", s.get("expected_result", ""))
-                })
-            elif isinstance(s, str):
-                normalized["steps"].append({
-                    "step": i + 1,
-                    "action": s,
-                    "expected": ""
-                })
+        for i, step in enumerate(raw_steps):
+            if isinstance(step, dict):
+                normalized["steps"].append(
+                    {
+                        "step": step.get("step", i + 1),
+                        "action": step.get("action", step.get("description", "No action")),
+                        "expected": step.get("expected", step.get("expected_result", "")),
+                    }
+                )
+            elif isinstance(step, str):
+                normalized["steps"].append(
+                    {"step": i + 1, "action": step, "expected": ""}
+                )
 
     if not normalized["steps"]:
-        normalized["steps"].append({
-            "step": 1,
-            "action": "Execute test",
-            "expected": "Verify expected behavior"
-        })
+        normalized["steps"].append(
+            {
+                "step": 1,
+                "action": "Execute test",
+                "expected": "Verify expected behavior",
+            }
+        )
 
     return normalized
 
 
-def generate_test_cases(prompt, model_name="llama3:8b-instruct-q3_K_M", retries=3, requirement=None):
+@lru_cache(maxsize=4)
+def _get_chat_model(model_name: str) -> ChatOllama:
+    return ChatOllama(
+        model=model_name,
+        temperature=0.15,
+        num_predict=2600,
+    )
 
+
+def _coerce_content_to_text(content) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, dict):
+                parts.append(str(item.get("text", "")))
+            else:
+                parts.append(str(item))
+        return "".join(parts)
+    return str(content)
+
+
+def _invoke_langchain(prompt: str, model_name: str) -> str:
+    llm = _get_chat_model(model_name)
+    response = llm.invoke(prompt)
+    content = getattr(response, "content", response)
+    return _coerce_content_to_text(content)
+
+
+def generate_test_cases(
+    prompt, model_name="llama3:8b-instruct-q3_K_M", retries=3, requirement=None
+):
     last_error = None
+    retry_prompt = prompt
 
     for attempt in range(retries + 1):
         try:
-            response = chat(
-                model=model_name,
-                messages=[{"role": "user", "content": prompt}],
-                options={"temperature": 0.15, "num_predict": 1500}
-            )
+            content = _invoke_langchain(retry_prompt, model_name=model_name)
 
-            content = response["message"]["content"]
-
-            # Debug: print first 300 chars on failure attempts
             if attempt > 0:
-                print(f"  [Attempt {attempt + 1}] Raw response preview: {content[:200]}...")
+                print(
+                    f"  [Attempt {attempt + 1}] Raw response preview: {content[:200]}..."
+                )
 
             test_cases = parse_json_robust(content)
-
-            # Validate and normalize each test case
-            validated = []
-            for tc in test_cases:
-                if isinstance(tc, dict) and "title" in tc:
-                    validated.append(validate_test_case(tc))
+            validated = [
+                validate_test_case(tc)
+                for tc in test_cases
+                if isinstance(tc, dict) and "title" in tc
+            ]
 
             if not validated:
                 raise ValueError("Parsed JSON but no valid test cases found")
@@ -257,7 +264,11 @@ def generate_test_cases(prompt, model_name="llama3:8b-instruct-q3_K_M", retries=
         except Exception as e:
             last_error = e
             if attempt < retries:
-                print(f"⚠️ Attempt {attempt + 1} failed: {str(e)[:120]}, retrying...")
+                print(f"Attempt {attempt + 1} failed: {str(e)[:120]}, retrying...")
+                retry_prompt = (
+                    prompt
+                    + "\n\nYour last answer was invalid. Return ONLY a valid JSON array now."
+                )
                 continue
 
     raise ValueError(f"Failed after {retries + 1} attempts. Last error: {last_error}")
