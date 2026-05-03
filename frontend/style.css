@@ -429,6 +429,62 @@ input[type="text"]:focus {
     background: rgba(154, 176, 193, 0.28);
 }
 
+.case-block {
+    border: 1px solid rgba(154, 176, 193, 0.16);
+    border-radius: 10px;
+    background: rgba(7, 22, 33, 0.55);
+    padding: 0.52rem 0.58rem;
+    margin-bottom: 0.52rem;
+}
+
+.case-block-label {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.32rem;
+}
+
+.precondition-list {
+    margin: 0;
+    padding-left: 1rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.payload-box {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    color: #cfe6f4;
+}
+
+.expected-text {
+    margin: 0;
+    color: #cfe6f4;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.criteria-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.34rem;
+}
+
+.criteria-chip {
+    border: 1px solid rgba(46, 162, 244, 0.45);
+    border-radius: 999px;
+    background: rgba(46, 162, 244, 0.14);
+    color: #9ad5ff;
+    font-size: 0.67rem;
+    padding: 0.16rem 0.48rem;
+}
+
 .step-table {
     border: 1px solid rgba(154, 176, 193, 0.18);
     border-radius: 12px;

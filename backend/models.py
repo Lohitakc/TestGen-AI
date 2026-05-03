@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
@@ -12,7 +12,12 @@ class TestCaseModel(BaseModel):
     title: str
     type: str = "Functional"
     priority: str = "Medium"
-    steps: List[StepModel]
+    preconditions: List[str] = Field(default_factory=list)
+    copy_paste_input: str = ""
+    expected_outcome: str = ""
+    ac_covered: List[str] = Field(default_factory=list)
+    # Backward compatibility for legacy outputs already saved in older runs.
+    steps: List[StepModel] = Field(default_factory=list)
 
 
 class RequirementInput(BaseModel):

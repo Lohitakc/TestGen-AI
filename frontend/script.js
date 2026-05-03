@@ -32,12 +32,13 @@ function parseAcceptanceCriteria(rawText) {
 
 function normalizeSuite(tc) {
     const title = String(tc.title || "").toLowerCase();
+    const hasCopyStyle = Boolean(tc.copy_paste_input || tc.expected_outcome);
     const stepCount = Array.isArray(tc.steps) ? tc.steps.length : 0;
 
     if (title.startsWith("[supplemental]")) return "supplemental";
     if (title.startsWith("[rigorous]")) return "rigorous";
     if (SIMPLE_MARKERS.some((marker) => title.includes(marker))) return "supplemental";
-    if (stepCount <= 2) return "supplemental";
+    if (!hasCopyStyle && stepCount <= 2) return "supplemental";
     return "rigorous";
 }
 
@@ -150,6 +151,24 @@ function renderSummary(cases) {
     q("riskCount").textContent = String(summary.riskCount);
 }
 
+function searchableParts(tc) {
+    const preconditions = Array.isArray(tc.preconditions) ? tc.preconditions : [];
+    const covered = Array.isArray(tc.ac_covered) ? tc.ac_covered : [];
+    const legacy = Array.isArray(tc.steps)
+        ? tc.steps.flatMap((step) => [step.action || "", step.expected || ""])
+        : [];
+
+    return [
+        tc.title || "",
+        tc.type || "",
+        tc.copy_paste_input || "",
+        tc.expected_outcome || "",
+        ...preconditions,
+        ...covered,
+        ...legacy,
+    ];
+}
+
 function getFilteredCases() {
     const suiteFilter = q("suiteFilter").value;
     const typeFilter = q("typeFilter").value;
@@ -163,18 +182,7 @@ function getFilteredCases() {
         if (typeFilter !== "all" && type !== typeFilter) return false;
 
         if (!query) return true;
-
-        const searchable = [
-            tc.title || "",
-            tc.type || "",
-            ...(Array.isArray(tc.steps)
-                ? tc.steps.flatMap((s) => [s.action || "", s.expected || ""])
-                : []),
-        ]
-            .join(" ")
-            .toLowerCase();
-
-        return searchable.includes(query);
+        return searchableParts(tc).join(" ").toLowerCase().includes(query);
     });
 }
 
@@ -199,12 +207,10 @@ function suiteClass(tc) {
     return normalizeSuite(tc) === "rigorous" ? "suite-rigorous" : "suite-supplemental";
 }
 
-function renderStepRows(steps) {
-    if (!Array.isArray(steps) || steps.length === 0) {
-        return `<div class="step-row"><span>1</span><span>No action</span><span>No expected result</span></div>`;
-    }
+function renderLegacyStepRows(steps) {
+    if (!Array.isArray(steps) || steps.length === 0) return "";
 
-    return steps
+    const rows = steps
         .map((step, idx) => {
             const stepNo = escapeHtml(step.step ?? idx + 1);
             const action = escapeHtml(step.action || "");
@@ -218,6 +224,66 @@ function renderStepRows(steps) {
             `;
         })
         .join("");
+
+    return `
+        <div class="step-table">
+            <div class="step-head">
+                <span>#</span>
+                <span>Action</span>
+                <span>Expected</span>
+            </div>
+            ${rows}
+        </div>
+    `;
+}
+
+function renderPreconditions(preconditions) {
+    if (!Array.isArray(preconditions) || preconditions.length === 0) return "";
+    const items = preconditions
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+    return `
+        <section class="case-block">
+            <p class="case-block-label">Preconditions</p>
+            <ul class="precondition-list">${items}</ul>
+        </section>
+    `;
+}
+
+function renderCoveredCriteria(criteria) {
+    if (!Array.isArray(criteria) || criteria.length === 0) return "";
+    const chips = criteria
+        .map((item) => `<span class="criteria-chip">${escapeHtml(item)}</span>`)
+        .join("");
+    return `
+        <section class="case-block">
+            <p class="case-block-label">Acceptance Criteria Covered</p>
+            <div class="criteria-wrap">${chips}</div>
+        </section>
+    `;
+}
+
+function formatCaseForClipboard(tc) {
+    const preconditions = Array.isArray(tc.preconditions) ? tc.preconditions : [];
+    const criteria = Array.isArray(tc.ac_covered) ? tc.ac_covered : [];
+    const lines = [
+        `Title: ${tc.title || "Untitled"}`,
+        `Type: ${tc.type || "Functional"}`,
+        `Priority: ${tc.priority || "Medium"}`,
+        "",
+        "Preconditions:",
+        preconditions.length > 0 ? preconditions.map((item) => `- ${item}`).join("\n") : "- None",
+        "",
+        "Copy-Paste Input:",
+        tc.copy_paste_input || "(not provided)",
+        "",
+        "Expected Outcome:",
+        tc.expected_outcome || "(not provided)",
+        "",
+        "Acceptance Criteria Covered:",
+        criteria.length > 0 ? criteria.map((item) => `- ${item}`).join("\n") : "- Not specified",
+    ];
+    return lines.join("\n");
 }
 
 function buildCaseCard(tc, index) {
@@ -226,7 +292,12 @@ function buildCaseCard(tc, index) {
     const title = escapeHtml(tc.title || "Untitled");
     const type = escapeHtml(tc.type || "Functional");
     const priority = escapeHtml(tc.priority || "Medium");
-    const stepsHtml = renderStepRows(tc.steps);
+    const copyInput = escapeHtml(tc.copy_paste_input || "");
+    const expected = escapeHtml(tc.expected_outcome || "");
+    const preconditionsHtml = renderPreconditions(tc.preconditions);
+    const criteriaHtml = renderCoveredCriteria(tc.ac_covered);
+    const legacyStepsHtml =
+        tc.copy_paste_input || tc.expected_outcome ? "" : renderLegacyStepRows(tc.steps);
 
     return `
         <article class="case-card ${suiteClass(tc)}">
@@ -238,17 +309,25 @@ function buildCaseCard(tc, index) {
                 <div class="case-meta">
                     <span class="badge ${typeClass(tc.type)}">${type}</span>
                     <span class="badge ${priorityClass(tc.priority)}">${priority}</span>
-                    <button class="mini-btn" onclick="copyCase(${index})" type="button">Copy</button>
+                    <button class="mini-btn" onclick="copyInput(${index})" type="button">Copy Input</button>
+                    <button class="mini-btn" onclick="copyCase(${index})" type="button">Copy Case</button>
                 </div>
             </header>
-            <div class="step-table">
-                <div class="step-head">
-                    <span>#</span>
-                    <span>Action</span>
-                    <span>Expected</span>
-                </div>
-                ${stepsHtml}
-            </div>
+
+            ${preconditionsHtml}
+
+            <section class="case-block">
+                <p class="case-block-label">Copy-Paste Input</p>
+                <pre class="payload-box">${copyInput || "No explicit input provided."}</pre>
+            </section>
+
+            <section class="case-block">
+                <p class="case-block-label">Expected Outcome</p>
+                <p class="expected-text">${expected || "No expected outcome provided."}</p>
+            </section>
+
+            ${criteriaHtml}
+            ${legacyStepsHtml}
         </article>
     `;
 }
@@ -380,8 +459,19 @@ function downloadResults() {
 window.copyCase = async function copyCase(index) {
     const tc = state.testCases[index];
     if (!tc) return;
-    const text = JSON.stringify(tc, null, 2);
+    const text = formatCaseForClipboard(tc);
     await navigator.clipboard.writeText(text);
+};
+
+window.copyInput = async function copyInput(index) {
+    const tc = state.testCases[index];
+    if (!tc) return;
+
+    let text = String(tc.copy_paste_input || "").trim();
+    if (!text && Array.isArray(tc.steps)) {
+        text = tc.steps.map((step) => step.action || "").filter(Boolean).join("\n");
+    }
+    await navigator.clipboard.writeText(text || "No copy-paste input provided.");
 };
 
 function bindEvents() {

@@ -1,5 +1,24 @@
 from sentence_transformers import util
 
+
+def _comparison_texts(test_case):
+    texts = [
+        test_case.get("title", ""),
+        test_case.get("copy_paste_input", ""),
+        test_case.get("expected_outcome", ""),
+        " ".join(test_case.get("ac_covered", []))
+        if isinstance(test_case.get("ac_covered"), list)
+        else "",
+    ]
+
+    # Backward compatibility with legacy step-based outputs.
+    for step in test_case.get("steps", []) if isinstance(test_case.get("steps", []), list) else []:
+        texts.append(step.get("action", ""))
+        texts.append(step.get("expected", ""))
+
+    return [text for text in texts if str(text).strip()]
+
+
 def compute_ac_coverage(acceptance_criteria, test_cases, model, threshold=0.5):
     """
     Computes semantic Acceptance Criteria Coverage (ACCov).
@@ -10,7 +29,6 @@ def compute_ac_coverage(acceptance_criteria, test_cases, model, threshold=0.5):
     if not acceptance_criteria:
         return 0.0
 
-    # Pre-encode acceptance criteria
     ac_embeddings = {
         ac: model.encode(ac, convert_to_tensor=True)
         for ac in acceptance_criteria
@@ -21,17 +39,8 @@ def compute_ac_coverage(acceptance_criteria, test_cases, model, threshold=0.5):
     for ac, ac_emb in ac_embeddings.items():
         matched = False
 
-        for tc in test_cases:
-            # Combine multiple signals for better matching
-            comparison_texts = [
-                tc.get("title", ""),
-                *(step.get("expected", "") for step in tc.get("steps", []))
-            ]
-
-            for text in comparison_texts:
-                if not text:
-                    continue
-
+        for test_case in test_cases:
+            for text in _comparison_texts(test_case):
                 text_emb = model.encode(text, convert_to_tensor=True)
                 similarity = float(util.cos_sim(ac_emb, text_emb))
 
@@ -48,8 +57,6 @@ def compute_ac_coverage(acceptance_criteria, test_cases, model, threshold=0.5):
     return covered / len(acceptance_criteria)
 
 
-from sentence_transformers import util
-
 def explain_ac_matching(acceptance_criteria, test_cases, model, threshold=0.5):
     """
     Debug utility to explain why acceptance criteria
@@ -62,40 +69,33 @@ def explain_ac_matching(acceptance_criteria, test_cases, model, threshold=0.5):
         ac_emb = model.encode(ac, convert_to_tensor=True)
         matches = []
 
-        for tc in test_cases:
-            # Combine title + expected results
-            texts = [tc.get("title", "")] + [
-                step.get("expected", "") for step in tc.get("steps", [])
-            ]
-
-            for text in texts:
-                if not text:
-                    continue
-
+        for test_case in test_cases:
+            for text in _comparison_texts(test_case):
                 text_emb = model.encode(text, convert_to_tensor=True)
                 similarity = float(util.cos_sim(ac_emb, text_emb))
 
                 matches.append({
                     "text": text,
-                    "similarity": round(similarity, 3)
+                    "similarity": round(similarity, 3),
+                    "meets_threshold": similarity >= threshold,
                 })
 
-        # Sort matches by similarity (descending)
         explanations[ac] = sorted(
             matches,
-            key=lambda x: x["similarity"],
-            reverse=True
+            key=lambda item: item["similarity"],
+            reverse=True,
         )
 
     return explanations
+
 
 def compute_negative_ratio(test_cases):
     if not test_cases:
         return 0.0
 
     negative_count = 0
-    for tc in test_cases:
-        tc_type = tc.get("type", "").lower()
+    for test_case in test_cases:
+        tc_type = test_case.get("type", "").lower()
         if tc_type in ["negative", "boundary"]:
             negative_count += 1
 

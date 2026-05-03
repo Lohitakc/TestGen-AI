@@ -2,21 +2,20 @@ BASE_TEST_GEN_PROMPT = """
 You are an expert QA engineer.
 
 Task:
-Generate test cases from the given requirement and acceptance criteria.
+Generate copy-paste-ready test cases from the given requirement and acceptance criteria.
 
 STRICT RULES (must follow):
 1. Output ONLY valid JSON - no markdown, no explanation, no extra text.
 2. Do NOT wrap output in ```json or ``` blocks.
 3. The output MUST be a JSON array of objects.
-4. Each acceptance criterion must be covered by at least one test case.
-5. Generate at least 10 rigorous, feature-specific test cases that deeply validate behavior, edge cases, and failure modes.
-6. The rigorous 10 cases must NOT be generic smoke/basic checks.
-7. Add 2 to 4 supplemental simple checks in addition to the rigorous cases.
-8. Include Functional, Negative, Boundary, and at least one Integration or Performance scenario where applicable.
-9. Test cases must be non-redundant and concrete.
-10. Use title prefixes:
-   - "[RIGOROUS]" for the rigorous cases
-   - "[SUPPLEMENTAL]" for the additional simple checks
+4. Generate EXACTLY 10 rigorous cases. No supplemental cases.
+5. Every case title MUST start with "[RIGOROUS]".
+6. Each acceptance criterion must be covered by at least one case.
+7. Cases must be topic-specific and concrete. Avoid generic phrases like "valid input", "invalid input", "test data", or "happy path".
+8. Each case must include realistic copy-paste values a tester can directly use.
+9. Each case must be medium length (clear but concise): not too short, not too long.
+10. Include a balanced mix of types across the 10 cases: Functional, Negative, Boundary, and at least one Integration or Performance/Security case when relevant.
+11. Cases must be non-redundant and target different risk angles.
 
 Requirement:
 {description}
@@ -31,12 +30,13 @@ You MUST use this EXACT JSON structure:
 
 [
   {{
-    "title": "[RIGOROUS] Short test case title",
+    "title": "[RIGOROUS] Specific scenario title",
     "type": "Functional",
     "priority": "High",
-    "steps": [
-      {{"step": 1, "action": "What the tester does", "expected": "What should happen"}}
-    ]
+    "preconditions": ["Short precondition 1", "Short precondition 2"],
+    "copy_paste_input": "Exact input values tester can copy-paste",
+    "expected_outcome": "Specific expected result to verify",
+    "ac_covered": ["Exact acceptance criterion text covered by this case"]
   }}
 ]
 
@@ -44,8 +44,11 @@ RULES FOR VALID JSON:
 - Use double quotes for all keys and string values.
 - No trailing commas.
 - No comments.
-- Every "steps" entry MUST have "step", "action", and "expected" keys.
-- Keep each test case actionable with 3 to 6 steps when possible.
+- Keep preconditions to 1-3 short lines.
+- copy_paste_input must contain concrete values and field names when possible.
+- expected_outcome must be verifiable and explicit (UI message/state/API response/DB state, as applicable).
+- ac_covered must reference one or more acceptance criteria from the given list.
+- Return EXACTLY 10 objects in the array.
 
 Return ONLY the JSON array. Nothing else.
 """
