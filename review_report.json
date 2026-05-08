@@ -1,0 +1,786 @@
+{
+  "generated_at": "2026-05-08T07:20:38+00:00",
+  "input_file": "data\\samples\\generated_tests.json",
+  "reviewer_mode": "heuristic",
+  "summary": {
+    "total_requirements": 30,
+    "total_test_cases": 96,
+    "duplicate_cases": 8,
+    "weak_expected_outcomes": 45,
+    "missing_negative_coverage": true,
+    "requirements_without_negative_coverage": [
+      "REQ-005",
+      "REQ-006",
+      "REQ-008",
+      "REQ-012",
+      "REQ-013",
+      "REQ-019",
+      "REQ-024",
+      "REQ-029"
+    ],
+    "unclear_test_titles": 0,
+    "poor_acceptance_criteria_mapping": 30,
+    "shallow_edge_case_coverage": 5,
+    "inconsistent_formatting": 0,
+    "overly_generic_test_cases": 29
+  },
+  "findings": [
+    {
+      "severity": "medium",
+      "issue": "Duplicate test cases detected",
+      "affected_tests": [
+        "REQ-001::TC-4",
+        "REQ-002::TC-4",
+        "REQ-003::TC-4",
+        "REQ-004::TC-4",
+        "REQ-006::TC-4",
+        "REQ-016::TC-3",
+        "REQ-017::TC-4",
+        "REQ-017::TC-5",
+        "REQ-020::TC-4",
+        "REQ-020::TC-5",
+        "REQ-028::TC-3"
+      ],
+      "recommendation": "Merge near-identical tests or diversify coverage with unique scenarios/assertions.",
+      "details": {
+        "exact_duplicate_groups": [
+          [
+            "REQ-001::TC-4",
+            "REQ-002::TC-4",
+            "REQ-003::TC-4",
+            "REQ-006::TC-4",
+            "REQ-020::TC-4"
+          ],
+          [
+            "REQ-004::TC-4",
+            "REQ-016::TC-3",
+            "REQ-017::TC-4"
+          ],
+          [
+            "REQ-017::TC-5",
+            "REQ-020::TC-5",
+            "REQ-028::TC-3"
+          ]
+        ],
+        "near_duplicate_pairs": []
+      }
+    },
+    {
+      "severity": "medium",
+      "issue": "Weak expected outcomes detected",
+      "affected_tests": [
+        "REQ-001::TC-1",
+        "REQ-001::TC-2",
+        "REQ-001::TC-3",
+        "REQ-002::TC-1",
+        "REQ-002::TC-2",
+        "REQ-002::TC-3",
+        "REQ-003::TC-1",
+        "REQ-004::TC-1",
+        "REQ-004::TC-2",
+        "REQ-004::TC-3",
+        "REQ-004::TC-4",
+        "REQ-005::TC-1",
+        "REQ-006::TC-1",
+        "REQ-007::TC-1",
+        "REQ-007::TC-3",
+        "REQ-008::TC-1",
+        "REQ-008::TC-3",
+        "REQ-009::TC-1",
+        "REQ-009::TC-2",
+        "REQ-009::TC-3",
+        "REQ-009::TC-4",
+        "REQ-013::TC-1",
+        "REQ-013::TC-2",
+        "REQ-013::TC-3",
+        "REQ-015::TC-2",
+        "REQ-016::TC-1",
+        "REQ-016::TC-2",
+        "REQ-016::TC-3",
+        "REQ-017::TC-1",
+        "REQ-017::TC-2",
+        "REQ-017::TC-3",
+        "REQ-017::TC-4",
+        "REQ-017::TC-5",
+        "REQ-020::TC-1",
+        "REQ-020::TC-2",
+        "REQ-020::TC-5",
+        "REQ-021::TC-1",
+        "REQ-021::TC-3",
+        "REQ-023::TC-1",
+        "REQ-025::TC-1",
+        "REQ-026::TC-1",
+        "REQ-026::TC-3",
+        "REQ-028::TC-1",
+        "REQ-028::TC-3",
+        "REQ-029::TC-2"
+      ],
+      "recommendation": "Use measurable outcomes (status codes, exact UI text, timing thresholds, or state changes)."
+    },
+    {
+      "severity": "high",
+      "issue": "Missing negative coverage in one or more requirements",
+      "affected_tests": [
+        "REQ-005",
+        "REQ-006",
+        "REQ-008",
+        "REQ-012",
+        "REQ-013",
+        "REQ-019",
+        "REQ-024",
+        "REQ-029"
+      ],
+      "recommendation": "Add failure-path, invalid-input, boundary, and authorization-denial scenarios."
+    },
+    {
+      "severity": "high",
+      "issue": "Poor acceptance-criteria mapping",
+      "affected_tests": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-010",
+        "REQ-011",
+        "REQ-012",
+        "REQ-013",
+        "REQ-014",
+        "REQ-015",
+        "REQ-016",
+        "REQ-017",
+        "REQ-018",
+        "REQ-019",
+        "REQ-020",
+        "REQ-021",
+        "REQ-022",
+        "REQ-023",
+        "REQ-024",
+        "REQ-025",
+        "REQ-026",
+        "REQ-027",
+        "REQ-028",
+        "REQ-029",
+        "REQ-030"
+      ],
+      "recommendation": "Map each case to explicit acceptance criteria and ensure all criteria are covered.",
+      "details": {
+        "requirements": [
+          {
+            "requirement_id": "REQ-001",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-002",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-003",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-004",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-005",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Empty query returns popular items"
+            ]
+          },
+          {
+            "requirement_id": "REQ-006",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-007",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-008",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-009",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-010",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Audit logs record admin actions"
+            ]
+          },
+          {
+            "requirement_id": "REQ-011",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-012",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-013",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-014",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-015",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Buttons and links have accessible names"
+            ]
+          },
+          {
+            "requirement_id": "REQ-016",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Reviews can be paginated"
+            ]
+          },
+          {
+            "requirement_id": "REQ-017",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-018",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Limit resets after correct window"
+            ]
+          },
+          {
+            "requirement_id": "REQ-019",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Export file downloads within 10 seconds for 1 year data"
+            ]
+          },
+          {
+            "requirement_id": "REQ-020",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Messages delivered in under 1 second"
+            ]
+          },
+          {
+            "requirement_id": "REQ-021",
+            "coverage_ratio": 0.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Subscriptions renew automatically unless cancelled",
+              "Invoices generated each billing cycle",
+              "Failed payments notify user and retry per policy"
+            ]
+          },
+          {
+            "requirement_id": "REQ-022",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Status changes are logged and emailed"
+            ]
+          },
+          {
+            "requirement_id": "REQ-023",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-024",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-025",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-026",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-027",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-028",
+            "coverage_ratio": 0.67,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": [
+              "Export respects user privacy settings"
+            ]
+          },
+          {
+            "requirement_id": "REQ-029",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          },
+          {
+            "requirement_id": "REQ-030",
+            "coverage_ratio": 1.0,
+            "mapped_case_ratio": 0.0,
+            "missing_criteria": []
+          }
+        ]
+      }
+    },
+    {
+      "severity": "medium",
+      "issue": "Shallow edge-case coverage",
+      "affected_tests": [
+        "REQ-005",
+        "REQ-006",
+        "REQ-019",
+        "REQ-025",
+        "REQ-029"
+      ],
+      "recommendation": "Add boundary and stress scenarios (limits, time windows, retries, malformed input).",
+      "details": {
+        "requirements": [
+          {
+            "requirement_id": "REQ-005",
+            "edge_case_ratio": 0.0,
+            "edge_case_count": 0,
+            "total_cases": 2
+          },
+          {
+            "requirement_id": "REQ-006",
+            "edge_case_ratio": 0.0,
+            "edge_case_count": 0,
+            "total_cases": 4
+          },
+          {
+            "requirement_id": "REQ-019",
+            "edge_case_ratio": 0.0,
+            "edge_case_count": 0,
+            "total_cases": 2
+          },
+          {
+            "requirement_id": "REQ-025",
+            "edge_case_ratio": 0.0,
+            "edge_case_count": 0,
+            "total_cases": 3
+          },
+          {
+            "requirement_id": "REQ-029",
+            "edge_case_ratio": 0.0,
+            "edge_case_count": 0,
+            "total_cases": 3
+          }
+        ]
+      }
+    },
+    {
+      "severity": "medium",
+      "issue": "Overly generic test cases",
+      "affected_tests": [
+        "REQ-001::TC-4",
+        "REQ-002::TC-4",
+        "REQ-003::TC-4",
+        "REQ-004::TC-1",
+        "REQ-006::TC-1",
+        "REQ-006::TC-4",
+        "REQ-007::TC-1",
+        "REQ-008::TC-1",
+        "REQ-008::TC-2",
+        "REQ-008::TC-3",
+        "REQ-010::TC-1",
+        "REQ-011::TC-1",
+        "REQ-013::TC-1",
+        "REQ-013::TC-3",
+        "REQ-015::TC-1",
+        "REQ-015::TC-2",
+        "REQ-017::TC-5",
+        "REQ-020::TC-4",
+        "REQ-020::TC-5",
+        "REQ-021::TC-1",
+        "REQ-021::TC-3",
+        "REQ-022::TC-1",
+        "REQ-023::TC-1",
+        "REQ-025::TC-1",
+        "REQ-027::TC-1",
+        "REQ-028::TC-3",
+        "REQ-029::TC-1",
+        "REQ-029::TC-2",
+        "REQ-030::TC-2"
+      ],
+      "recommendation": "Add concrete data inputs, precise assertions, and context-specific actions."
+    }
+  ],
+  "requirement_breakdown": [
+    {
+      "requirement_id": "REQ-001",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 2,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 4,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-002",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 2,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-003",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 2,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-004",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 2,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-005",
+      "title": "",
+      "test_case_count": 2,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Empty query returns popular items"
+      ]
+    },
+    {
+      "requirement_id": "REQ-006",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-007",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-008",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-009",
+      "title": "",
+      "test_case_count": 4,
+      "negative_case_count": 2,
+      "edge_case_count": 3,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-010",
+      "title": "",
+      "test_case_count": 2,
+      "negative_case_count": 1,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Audit logs record admin actions"
+      ]
+    },
+    {
+      "requirement_id": "REQ-011",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-012",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 0,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-013",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-014",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-015",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Buttons and links have accessible names"
+      ]
+    },
+    {
+      "requirement_id": "REQ-016",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 2,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Reviews can be paginated"
+      ]
+    },
+    {
+      "requirement_id": "REQ-017",
+      "title": "",
+      "test_case_count": 5,
+      "negative_case_count": 3,
+      "edge_case_count": 3,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-018",
+      "title": "",
+      "test_case_count": 2,
+      "negative_case_count": 1,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Limit resets after correct window"
+      ]
+    },
+    {
+      "requirement_id": "REQ-019",
+      "title": "",
+      "test_case_count": 2,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Export file downloads within 10 seconds for 1 year data"
+      ]
+    },
+    {
+      "requirement_id": "REQ-020",
+      "title": "",
+      "test_case_count": 5,
+      "negative_case_count": 1,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Messages delivered in under 1 second"
+      ]
+    },
+    {
+      "requirement_id": "REQ-021",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.0,
+      "missing_acceptance_criteria": [
+        "Subscriptions renew automatically unless cancelled",
+        "Invoices generated each billing cycle",
+        "Failed payments notify user and retry per policy"
+      ]
+    },
+    {
+      "requirement_id": "REQ-022",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Status changes are logged and emailed"
+      ]
+    },
+    {
+      "requirement_id": "REQ-023",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-024",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-025",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-026",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 2,
+      "edge_case_count": 3,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-027",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-028",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 2,
+      "edge_case_count": 1,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 0.67,
+      "missing_acceptance_criteria": [
+        "Export respects user privacy settings"
+      ]
+    },
+    {
+      "requirement_id": "REQ-029",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 0,
+      "edge_case_count": 0,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    },
+    {
+      "requirement_id": "REQ-030",
+      "title": "",
+      "test_case_count": 3,
+      "negative_case_count": 1,
+      "edge_case_count": 2,
+      "acceptance_criteria_count": 3,
+      "acceptance_criteria_coverage_ratio": 1.0,
+      "missing_acceptance_criteria": []
+    }
+  ],
+  "notes": []
+}
